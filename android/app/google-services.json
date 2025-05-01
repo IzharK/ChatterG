@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301596451344",
+    "project_id": "chatterjee-607af",
+    "storage_bucket": "chatterjee-607af.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301596451344:android:a02954bebc39d55570e095",
+        "android_client_info": {
+          "package_name": "com.izharkhan.chatter_jee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx3-OAjVfzyTJcjjxvC7Z7AHXrjVELvyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
