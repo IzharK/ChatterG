@@ -43,15 +43,21 @@ class FirestoreService extends GetxService {
 
   Stream<List<UserModel>> getAllUsersStream(String currentUserId) {
     return _db
-        .collection('users')
-        .where('uid', isNotEqualTo: currentUserId)
+        .collection('chats')
+        .where('members', arrayContains: currentUserId)
         .snapshots()
-        .map(
-          (snapshot) =>
-              snapshot.docs
-                  .map((doc) => UserModel.fromJson(doc.data()))
-                  .toList(),
-        );
+        .asyncMap((chatSnapshot) async {
+      final allUserIds = chatSnapshot.docs
+          .map((doc) => List<String>.from(doc.data()['members']))
+          .expand((id) => id)
+          .toSet();
+
+      allUserIds.remove(currentUserId);
+
+      final userFutures = allUserIds.map((userId) => getUser(userId)).toList();
+      final users = await Future.wait(userFutures);
+      return users.where((user) => user != null).cast<UserModel>().toList();
+    });
   }
 
   Future<ChatRoomModel?> getChatRoom(String chatId) async {
