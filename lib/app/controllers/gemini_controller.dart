@@ -1,11 +1,11 @@
-import 'dart:io';
+// import 'dart:io'; // TODO: Uncomment when file upload is needed
 
 import 'package:chatter_jee/app/data/providers/gemini_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart'; // TODO: Uncomment when file upload is needed
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart'; // TODO: Uncomment when file upload is needed
 import 'package:uuid/uuid.dart';
 
 class GeminiMessage {
@@ -13,16 +13,17 @@ class GeminiMessage {
   final String text;
   final bool isUser;
   final Timestamp timestamp;
-  final List<File>? images;
-  final List<File>? files;
+  // TODO: Uncomment when file upload is needed
+  // final List<File>? images;
+  // final List<File>? files;
 
   GeminiMessage({
     required this.id,
     required this.text,
     required this.isUser,
     required this.timestamp,
-    this.images,
-    this.files,
+    // this.images,
+    // this.files,
   });
 }
 
@@ -33,9 +34,10 @@ class GeminiController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool hasApiKey = false.obs;
 
+  // TODO: Uncomment when file upload is needed
   // Selected files and images
-  final RxList<File> selectedImages = <File>[].obs;
-  final RxList<File> selectedFiles = <File>[].obs;
+  // final RxList<File> selectedImages = <File>[].obs;
+  // final RxList<File> selectedFiles = <File>[].obs;
 
   // Model selection
   Rx<GeminiModel> get selectedModel => _geminiService.selectedModel;
@@ -82,39 +84,44 @@ class GeminiController extends GetxController {
   }
 
   Future<void> sendMessage(String text) async {
-    if (text.trim().isEmpty && selectedImages.isEmpty && selectedFiles.isEmpty)
-      return;
+    // TODO: Uncomment when file upload is needed
+    // if (text.trim().isEmpty && selectedImages.isEmpty && selectedFiles.isEmpty)
+    //   return;
+    if (text.trim().isEmpty) return;
 
     final userMessage = GeminiMessage(
       id: const Uuid().v4(),
       text: text,
       isUser: true,
       timestamp: Timestamp.now(),
-      images:
-          selectedImages.isNotEmpty ? List<File>.from(selectedImages) : null,
-      files: selectedFiles.isNotEmpty ? List<File>.from(selectedFiles) : null,
+      // TODO: Uncomment when file upload is needed
+      // images:
+      //     selectedImages.isNotEmpty ? List<File>.from(selectedImages) : null,
+      // files: selectedFiles.isNotEmpty ? List<File>.from(selectedFiles) : null,
     );
 
     messages.add(userMessage);
     messageController.clear();
 
+    // TODO: Uncomment when file upload is needed
     // Create copies of the current files and images
-    final currentImages =
-        selectedImages.isNotEmpty ? List<File>.from(selectedImages) : null;
-    final currentFiles =
-        selectedFiles.isNotEmpty ? List<File>.from(selectedFiles) : null;
-
-    // Clear selected files and images for the next message
-    clearSelectedMedia();
+    // final currentImages =
+    //     selectedImages.isNotEmpty ? List<File>.from(selectedImages) : null;
+    // final currentFiles =
+    //     selectedFiles.isNotEmpty ? List<File>.from(selectedFiles) : null;
+    //
+    // // Clear selected files and images for the next message
+    // clearSelectedMedia();
 
     // Show loading state
     isLoading.value = true;
 
     try {
+      // TODO: Uncomment when file upload is needed
       final response = await _geminiService.sendMessage(
         text,
-        images: currentImages,
-        files: currentFiles,
+        // images: currentImages,
+        // files: currentFiles,
       );
 
       final aiMessage = GeminiMessage(
@@ -142,65 +149,68 @@ class GeminiController extends GetxController {
     }
   }
 
-  // Pick images from gallery or camera
-  Future<void> pickImage(ImageSource source) async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: source);
+  // TODO: Uncomment when file upload is needed
+  // // Pick images from gallery or camera
+  // Future<void> pickImage(ImageSource source) async {
+  //   try {
+  //     final picker = ImagePicker();
+  //     final pickedFile = await picker.pickImage(source: source);
+  //
+  //     if (pickedFile != null) {
+  //       final file = File(pickedFile.path);
+  //       selectedImages.add(file);
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Error', 'Failed to pick image: $e');
+  //   }
+  // }
+  //
+  // // Pick files
+  // Future<void> pickFiles() async {
+  //   try {
+  //     final result = await FilePicker.platform.pickFiles(
+  //       type: FileType.any,
+  //       allowMultiple: true,
+  //     );
+  //
+  //     if (result != null && result.files.isNotEmpty) {
+  //       for (final file in result.files) {
+  //         if (file.path != null) {
+  //           selectedFiles.add(File(file.path!));
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Error', 'Failed to pick files: $e');
+  //   }
+  // }
 
-      if (pickedFile != null) {
-        final file = File(pickedFile.path);
-        selectedImages.add(file);
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to pick image: $e');
-    }
-  }
-
-  // Pick files
-  Future<void> pickFiles() async {
-    try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.any,
-        allowMultiple: true,
-      );
-
-      if (result != null && result.files.isNotEmpty) {
-        for (final file in result.files) {
-          if (file.path != null) {
-            selectedFiles.add(File(file.path!));
-          }
-        }
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to pick files: $e');
-    }
-  }
-
-  // Clear selected media
-  void clearSelectedMedia() {
-    selectedImages.clear();
-    selectedFiles.clear();
-  }
-
-  // Remove a specific image
-  void removeImage(int index) {
-    if (index >= 0 && index < selectedImages.length) {
-      selectedImages.removeAt(index);
-    }
-  }
-
-  // Remove a specific file
-  void removeFile(int index) {
-    if (index >= 0 && index < selectedFiles.length) {
-      selectedFiles.removeAt(index);
-    }
-  }
+  // TODO: Uncomment when file upload is needed
+  // // Clear selected media
+  // void clearSelectedMedia() {
+  //   selectedImages.clear();
+  //   selectedFiles.clear();
+  // }
+  //
+  // // Remove a specific image
+  // void removeImage(int index) {
+  //   if (index >= 0 && index < selectedImages.length) {
+  //     selectedImages.removeAt(index);
+  //   }
+  // }
+  //
+  // // Remove a specific file
+  // void removeFile(int index) {
+  //   if (index >= 0 && index < selectedFiles.length) {
+  //     selectedFiles.removeAt(index);
+  //   }
+  // }
 
   @override
   void onClose() {
     messageController.dispose();
-    clearSelectedMedia();
+    // TODO: Uncomment when file upload is needed
+    // clearSelectedMedia();
     super.onClose();
   }
 }

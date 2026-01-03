@@ -125,11 +125,17 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                             entries: [
                               MenuItem(
-                                label: 'Delete',
-                                icon: Icons.delete,
+                                label: const Text(
+                                  "Delete",
+                                  style: TextStyle(color: AppColors.errorRed),
+                                ),
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: AppColors.errorRed,
+                                ),
                                 value: 'delete',
                                 onSelected:
-                                    () => controller.deleteMessage(
+                                    (val) => controller.deleteMessage(
                                       context,
                                       decryptedMsg,
                                     ),
@@ -379,10 +385,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageInput({required bool isSending, required bool enabled}) {
+    // TODO: Uncomment when file upload is needed
+    // final bool canSend =
+    //     enabled &&
+    //     (controller.messageTextController.text.isNotEmpty ||
+    //         controller.hasAttachment);
     final bool canSend =
-        enabled &&
-        (controller.messageTextController.text.isNotEmpty ||
-            controller.hasAttachment);
+        enabled && controller.messageTextController.text.isNotEmpty;
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
@@ -393,87 +402,88 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Show pending attachment if any
-            Obx(() {
-              if (controller.hasAttachment) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 8,
-                  ),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        controller.pendingAttachmentType?.value == 'image'
-                            ? Icons.image_outlined
-                            : Icons.attach_file_outlined,
-                        color: AppColors.textGrey,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          controller.pendingAttachmentType?.value == 'image'
-                              ? "Image Ready"
-                              : "File Ready",
-                          style: const TextStyle(
-                            color: AppColors.textWhite,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          color: AppColors.textGrey,
-                          size: 20,
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: controller.clearPendingAttachment,
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            }),
-
+            // TODO: Uncomment when file upload is needed
+            // // Show pending attachment if any
+            // Obx(() {
+            //   if (controller.hasAttachment) {
+            //     return Container(
+            //       padding: const EdgeInsets.symmetric(
+            //         horizontal: 12,
+            //         vertical: 8,
+            //       ),
+            //       margin: const EdgeInsets.only(bottom: 8),
+            //       decoration: BoxDecoration(
+            //         color: AppColors.background,
+            //         borderRadius: BorderRadius.circular(12),
+            //       ),
+            //       child: Row(
+            //         children: [
+            //           Icon(
+            //             controller.pendingAttachmentType?.value == 'image'
+            //                 ? Icons.image_outlined
+            //                 : Icons.attach_file_outlined,
+            //             color: AppColors.textGrey,
+            //           ),
+            //           const SizedBox(width: 8),
+            //           Expanded(
+            //             child: Text(
+            //               controller.pendingAttachmentType?.value == 'image'
+            //                   ? "Image Ready"
+            //                   : "File Ready",
+            //               style: const TextStyle(
+            //                 color: AppColors.textWhite,
+            //                 fontWeight: FontWeight.w500,
+            //               ),
+            //               overflow: TextOverflow.ellipsis,
+            //             ),
+            //           ),
+            //           IconButton(
+            //             icon: const Icon(
+            //               Icons.close,
+            //               color: AppColors.textGrey,
+            //               size: 20,
+            //             ),
+            //             visualDensity: VisualDensity.compact,
+            //             padding: EdgeInsets.zero,
+            //             constraints: const BoxConstraints(),
+            //             onPressed: controller.clearPendingAttachment,
+            //           ),
+            //         ],
+            //       ),
+            //     );
+            //   }
+            //   return const SizedBox.shrink();
+            // }),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.attach_file,
-                    color: AppColors.textGrey,
-                  ),
-                  onPressed:
-                      enabled
-                          ? () {
-                            showModalBottomSheet(
-                              context: context,
-                              backgroundColor: AppColors.surface,
-                              builder:
-                                  (context) => AttachmentSheet(
-                                    onImageSelected: (_) {
-                                      context.pop();
-                                      controller.pickImage();
-                                    },
-                                    onFileSelected: (_) {
-                                      context.pop();
-                                      controller.pickFile();
-                                    },
-                                  ),
-                            );
-                          }
-                          : null,
-                ),
+                // TODO: Uncomment when file upload is needed
+                // IconButton(
+                //   icon: const Icon(
+                //     Icons.attach_file,
+                //     color: AppColors.textGrey,
+                //   ),
+                //   onPressed:
+                //       enabled
+                //           ? () {
+                //             showModalBottomSheet(
+                //               context: context,
+                //               backgroundColor: AppColors.surface,
+                //               builder:
+                //                   (context) => AttachmentSheet(
+                //                     onImageSelected: (_) {
+                //                       context.pop();
+                //                       controller.pickImage();
+                //                     },
+                //                     onFileSelected: (_) {
+                //                       context.pop();
+                //                       controller.pickFile();
+                //                     },
+                //                   ),
+                //             );
+                //           }
+                //           : null,
+                // ),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -590,35 +600,36 @@ class ChatInfoSheet extends StatelessWidget {
   }
 }
 
-class AttachmentSheet extends StatelessWidget {
-  final Function(String) onImageSelected;
-  final Function(String) onFileSelected;
-
-  const AttachmentSheet({
-    required this.onImageSelected,
-    required this.onFileSelected,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.photo_library_outlined),
-            title: const Text('Photo or Video'),
-            onTap: () => onImageSelected('image'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.attach_file_outlined),
-            title: const Text('File'),
-            onTap: () => onFileSelected('file'),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// TODO: Uncomment when file upload is needed
+// class AttachmentSheet extends StatelessWidget {
+//   final Function(String) onImageSelected;
+//   final Function(String) onFileSelected;
+//
+//   const AttachmentSheet({
+//     required this.onImageSelected,
+//     required this.onFileSelected,
+//     super.key,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.all(16),
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           ListTile(
+//             leading: const Icon(Icons.photo_library_outlined),
+//             title: const Text('Photo or Video'),
+//             onTap: () => onImageSelected('image'),
+//           ),
+//           ListTile(
+//             leading: const Icon(Icons.attach_file_outlined),
+//             title: const Text('File'),
+//             onTap: () => onFileSelected('file'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

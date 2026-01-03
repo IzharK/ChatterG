@@ -1,21 +1,21 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
+// import 'dart:io'; // TODO: Uncomment when file upload is needed
 
 import 'package:chatter_jee/app/controllers/auth_controller.dart';
 import 'package:chatter_jee/app/data/models/chat_message_model.dart';
 import 'package:chatter_jee/app/data/models/chat_room_model.dart';
 import 'package:chatter_jee/app/data/providers/crypto_service.dart';
 import 'package:chatter_jee/app/data/providers/firestore_service.dart';
-import 'package:chatter_jee/app/data/providers/storage_service.dart';
+// import 'package:chatter_jee/app/data/providers/storage_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cryptography/cryptography.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
+// import 'package:image_picker/image_picker.dart';
+// import 'package:path/path.dart' as path; // TODO: Uncomment when file upload is needed
 
 class DecryptedMessage {
   final String? text;
@@ -40,8 +40,9 @@ class ChatController extends GetxController {
   final _firestoreService = Get.find<FirestoreService>();
   final _authController = Get.find<AuthController>();
   final _cryptoService = Get.find<CryptoService>();
-  final _storageService = Get.find<StorageService>();
-  final _imagePicker = ImagePicker();
+  // TODO: Uncomment when file upload is needed
+  // final _storageService = Get.find<StorageService>();
+  // final _imagePicker = ImagePicker();
 
   final RxList<ChatMessageModel> messages = <ChatMessageModel>[].obs;
   final RxBool isLoading = true.obs;
@@ -225,7 +226,11 @@ class ChatController extends GetxController {
       return;
     }
 
-    if ((text.isEmpty && _pendingAttachment.value == null) || userId == null) {
+    // TODO: Uncomment when file upload is needed
+    // if ((text.isEmpty && _pendingAttachment.value == null) || userId == null) {
+    //   return;
+    // }
+    if (text.isEmpty || userId == null) {
       return;
     }
 
@@ -241,22 +246,23 @@ class ChatController extends GetxController {
     String? attachmentName;
     int? attachmentSize;
 
+    // TODO: Uncomment attachment handling when file upload is needed
     // Handle attachment if present
-    if (_pendingAttachment.value != null) {
-      final attachment = await _storageService.uploadAttachment(
-        chatId,
-        userId,
-        _pendingAttachment.value!,
-        pendingAttachmentType?.value ?? 'file',
-      );
-
-      if (attachment != null) {
-        attachmentUrl = attachment['url'];
-        attachmentType = attachment['type'];
-        attachmentName = attachment['name'];
-        attachmentSize = attachment['size'];
-      }
-    }
+    // if (_pendingAttachment.value != null) {
+    //   final attachment = await _storageService.uploadAttachment(
+    //     chatId,
+    //     userId,
+    //     _pendingAttachment.value!,
+    //     pendingAttachmentType?.value ?? 'file',
+    //   );
+    //
+    //   if (attachment != null) {
+    //     attachmentUrl = attachment['url'];
+    //     attachmentType = attachment['type'];
+    //     attachmentName = attachment['name'];
+    //     attachmentSize = attachment['size'];
+    //   }
+    // }
 
     // Only encrypt text if there is text to encrypt
     String? ciphertextBase64;
@@ -301,7 +307,8 @@ class ChatController extends GetxController {
         currentChatRoom.value!,
       );
       messageTextController.clear();
-      clearPendingAttachment();
+      // TODO: Uncomment when file upload is needed
+      // clearPendingAttachment();
     } catch (e) {
       Get.snackbar(
         'Error',
@@ -313,41 +320,42 @@ class ChatController extends GetxController {
     }
   }
 
+  // TODO: Uncomment attachment handling when file upload is needed
   // Add these properties for attachment handling
-  final Rx<File?> _pendingAttachment = Rx<File?>(null);
-  final RxString? pendingAttachmentType = RxString('');
-  final RxString _pendingAttachmentName = RxString('');
-
-  bool get hasAttachment => _pendingAttachment.value != null;
-  String get attachmentName => _pendingAttachmentName.value;
-
-  void clearPendingAttachment() {
-    _pendingAttachment.value = null;
-    pendingAttachmentType?.value = '';
-    _pendingAttachmentName.value = '';
-  }
-
-  Future<void> pickImage() async {
-    final pickedFile = await _imagePicker.pickImage(
-      source: ImageSource.gallery,
-    );
-
-    if (pickedFile != null) {
-      _pendingAttachment.value = File(pickedFile.path);
-      pendingAttachmentType?.value = 'image';
-      _pendingAttachmentName.value = path.basename(pickedFile.path);
-    }
-  }
-
-  Future<void> pickFile() async {
-    final result = await FilePicker.platform.pickFiles();
-
-    if (result != null && result.files.single.path != null) {
-      _pendingAttachment.value = File(result.files.single.path!);
-      pendingAttachmentType?.value = 'file';
-      _pendingAttachmentName.value = result.files.single.name;
-    }
-  }
+  // final Rx<File?> _pendingAttachment = Rx<File?>(null);
+  // final RxString? pendingAttachmentType = RxString('');
+  // final RxString _pendingAttachmentName = RxString('');
+  //
+  // bool get hasAttachment => _pendingAttachment.value != null;
+  // String get attachmentName => _pendingAttachmentName.value;
+  //
+  // void clearPendingAttachment() {
+  //   _pendingAttachment.value = null;
+  //   pendingAttachmentType?.value = '';
+  //   _pendingAttachmentName.value = '';
+  // }
+  //
+  // Future<void> pickImage() async {
+  //   final pickedFile = await _imagePicker.pickImage(
+  //     source: ImageSource.gallery,
+  //   );
+  //
+  //   if (pickedFile != null) {
+  //     _pendingAttachment.value = File(pickedFile.path);
+  //     pendingAttachmentType?.value = 'image';
+  //     _pendingAttachmentName.value = path.basename(pickedFile.path);
+  //   }
+  // }
+  //
+  // Future<void> pickFile() async {
+  //   final result = await FilePicker.platform.pickFiles();
+  //
+  //   if (result != null && result.files.single.path != null) {
+  //     _pendingAttachment.value = File(result.files.single.path!);
+  //     pendingAttachmentType?.value = 'file';
+  //     _pendingAttachmentName.value = result.files.single.name;
+  //   }
+  // }
 
   Future<void> deleteChat(BuildContext context) async {
     if (!canCurrentUserDeleteChat) {
@@ -472,15 +480,16 @@ class ChatController extends GetxController {
       // Delete from Firestore
       await _firestoreService.deleteMessage(chatId, messageId);
 
+      // TODO: Uncomment when file upload is needed
       // If message has an attachment, delete it from Supabase storage
-      if (hasAttachment) {
-        final attachmentPath = _extractStoragePathFromUrl(
-          message.attachmentUrl!,
-        );
-        if (attachmentPath != null) {
-          await _storageService.deleteAttachment(attachmentPath);
-        }
-      }
+      // if (hasAttachment) {
+      //   final attachmentPath = _extractStoragePathFromUrl(
+      //     message.attachmentUrl!,
+      //   );
+      //   if (attachmentPath != null) {
+      //     await _storageService.deleteAttachment(attachmentPath);
+      //   }
+      // }
 
       Get.snackbar(
         'Success',
@@ -507,25 +516,26 @@ class ChatController extends GetxController {
     return chatRoom.createdBy == currentUserId;
   }
 
+  // TODO: Uncomment when file upload is needed
   // Helper method to extract storage path from attachment URL
-  String? _extractStoragePathFromUrl(String url) {
-    // Example URL format: https://supabase-url/storage/v1/object/public/chat-attachments/chats/chatId/attachments/fileId.ext
-    try {
-      final uri = Uri.parse(url);
-      final pathSegments = uri.pathSegments;
-
-      // Find the index of 'chat-attachments' in the path
-      final bucketIndex = pathSegments.indexOf('chat-attachments');
-      if (bucketIndex >= 0 && bucketIndex < pathSegments.length - 1) {
-        // Return the path after 'chat-attachments'
-        return pathSegments.sublist(bucketIndex + 1).join('/');
-      }
-      return null;
-    } catch (e) {
-      log('Error extracting storage path: $e');
-      return null;
-    }
-  }
+  // String? _extractStoragePathFromUrl(String url) {
+  //   // Example URL format: https://supabase-url/storage/v1/object/public/chat-attachments/chats/chatId/attachments/fileId.ext
+  //   try {
+  //     final uri = Uri.parse(url);
+  //     final pathSegments = uri.pathSegments;
+  //
+  //     // Find the index of 'chat-attachments' in the path
+  //     final bucketIndex = pathSegments.indexOf('chat-attachments');
+  //     if (bucketIndex >= 0 && bucketIndex < pathSegments.length - 1) {
+  //       // Return the path after 'chat-attachments'
+  //       return pathSegments.sublist(bucketIndex + 1).join('/');
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     log('Error extracting storage path: $e');
+  //     return null;
+  //   }
+  // }
 
   @override
   void onClose() {

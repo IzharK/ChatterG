@@ -3,7 +3,7 @@ import 'package:chatter_jee/app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart'; // TODO: Uncomment when file upload is needed
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -143,143 +143,144 @@ class GeminiChatScreen extends StatelessWidget {
             }),
           ),
 
-          // Selected media preview
-          Obx(() {
-            final hasMedia =
-                controller.selectedImages.isNotEmpty ||
-                controller.selectedFiles.isNotEmpty;
-
-            if (!hasMedia) return const SizedBox.shrink();
-
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: AppColors.surface,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Images preview
-                  if (controller.selectedImages.isNotEmpty) ...[
-                    const Text(
-                      'Selected Images:',
-                      style: TextStyle(color: AppColors.textGrey),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.selectedImages.length,
-                        itemBuilder: (context, index) {
-                          final image = controller.selectedImages[index];
-                          return Stack(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                    image: FileImage(image),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 8,
-                                child: GestureDetector(
-                                  onTap: () => controller.removeImage(index),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black54,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.close,
-                                      size: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-
-                  // Files preview
-                  if (controller.selectedFiles.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Selected Files:',
-                      style: TextStyle(color: AppColors.textGrey),
-                    ),
-                    const SizedBox(height: 8),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.selectedFiles.length,
-                      itemBuilder: (context, index) {
-                        final file = controller.selectedFiles[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.insert_drive_file,
-                                color: AppColors.primary,
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  file.path.split('/').last,
-                                  style: const TextStyle(
-                                    color: AppColors.textWhite,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: AppColors.textGrey,
-                                ),
-                                onPressed: () => controller.removeFile(index),
-                                iconSize: 16,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-
-                  // Clear all button
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () => controller.clearSelectedMedia(),
-                      child: const Text('Clear All'),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }),
+          // TODO: Uncomment when file upload is needed
+          // // Selected media preview
+          // Obx(() {
+          //   final hasMedia =
+          //       controller.selectedImages.isNotEmpty ||
+          //       controller.selectedFiles.isNotEmpty;
+          //
+          //   if (!hasMedia) return const SizedBox.shrink();
+          //
+          //   return Container(
+          //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          //     color: AppColors.surface,
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         // Images preview
+          //         if (controller.selectedImages.isNotEmpty) ...[
+          //           const Text(
+          //             'Selected Images:',
+          //             style: TextStyle(color: AppColors.textGrey),
+          //           ),
+          //           const SizedBox(height: 8),
+          //           SizedBox(
+          //             height: 100,
+          //             child: ListView.builder(
+          //               scrollDirection: Axis.horizontal,
+          //               itemCount: controller.selectedImages.length,
+          //               itemBuilder: (context, index) {
+          //                 final image = controller.selectedImages[index];
+          //                 return Stack(
+          //                   children: [
+          //                     Container(
+          //                       margin: const EdgeInsets.only(right: 8),
+          //                       width: 100,
+          //                       height: 100,
+          //                       decoration: BoxDecoration(
+          //                         borderRadius: BorderRadius.circular(8),
+          //                         image: DecorationImage(
+          //                           image: FileImage(image),
+          //                           fit: BoxFit.cover,
+          //                         ),
+          //                       ),
+          //                     ),
+          //                     Positioned(
+          //                       top: 0,
+          //                       right: 8,
+          //                       child: GestureDetector(
+          //                         onTap: () => controller.removeImage(index),
+          //                         child: Container(
+          //                           padding: const EdgeInsets.all(4),
+          //                           decoration: const BoxDecoration(
+          //                             color: Colors.black54,
+          //                             shape: BoxShape.circle,
+          //                           ),
+          //                           child: const Icon(
+          //                             Icons.close,
+          //                             size: 16,
+          //                             color: Colors.white,
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ),
+          //                   ],
+          //                 );
+          //               },
+          //             ),
+          //           ),
+          //         ],
+          //
+          //         // Files preview
+          //         if (controller.selectedFiles.isNotEmpty) ...[
+          //           const SizedBox(height: 8),
+          //           const Text(
+          //             'Selected Files:',
+          //             style: TextStyle(color: AppColors.textGrey),
+          //           ),
+          //           const SizedBox(height: 8),
+          //           ListView.builder(
+          //             shrinkWrap: true,
+          //             physics: const NeverScrollableScrollPhysics(),
+          //             itemCount: controller.selectedFiles.length,
+          //             itemBuilder: (context, index) {
+          //               final file = controller.selectedFiles[index];
+          //               return Container(
+          //                 margin: const EdgeInsets.only(bottom: 8),
+          //                 padding: const EdgeInsets.symmetric(
+          //                   horizontal: 12,
+          //                   vertical: 8,
+          //                 ),
+          //                 decoration: BoxDecoration(
+          //                   color: AppColors.background,
+          //                   borderRadius: BorderRadius.circular(8),
+          //                 ),
+          //                 child: Row(
+          //                   children: [
+          //                     const Icon(
+          //                       Icons.insert_drive_file,
+          //                       color: AppColors.primary,
+          //                     ),
+          //                     const SizedBox(width: 8),
+          //                     Expanded(
+          //                       child: Text(
+          //                         file.path.split('/').last,
+          //                         style: const TextStyle(
+          //                           color: AppColors.textWhite,
+          //                         ),
+          //                         overflow: TextOverflow.ellipsis,
+          //                       ),
+          //                     ),
+          //                     IconButton(
+          //                       icon: const Icon(
+          //                         Icons.close,
+          //                         color: AppColors.textGrey,
+          //                       ),
+          //                       onPressed: () => controller.removeFile(index),
+          //                       iconSize: 16,
+          //                       padding: EdgeInsets.zero,
+          //                       constraints: const BoxConstraints(),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               );
+          //             },
+          //           ),
+          //         ],
+          //
+          //         // Clear all button
+          //         Align(
+          //           alignment: Alignment.centerRight,
+          //           child: TextButton(
+          //             onPressed: () => controller.clearSelectedMedia(),
+          //             child: const Text('Clear All'),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   );
+          // }),
 
           // Input area
           Container(
@@ -337,68 +338,69 @@ class GeminiChatScreen extends StatelessWidget {
                   ],
                 ),
 
-                // Media attachment buttons
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Obx(
-                        () => IconButton(
-                          icon: const Icon(
-                            Icons.camera_alt,
-                            color: AppColors.primary,
-                          ),
-                          onPressed:
-                              controller.selectedModel.value.supportsImages
-                                  ? () =>
-                                      controller.pickImage(ImageSource.camera)
-                                  : null,
-                          tooltip: 'Take Photo',
-                          color:
-                              controller.selectedModel.value.supportsImages
-                                  ? AppColors.primary
-                                  : AppColors.textGrey,
-                        ),
-                      ),
-                      Obx(
-                        () => IconButton(
-                          icon: const Icon(
-                            Icons.photo,
-                            color: AppColors.primary,
-                          ),
-                          onPressed:
-                              controller.selectedModel.value.supportsImages
-                                  ? () =>
-                                      controller.pickImage(ImageSource.gallery)
-                                  : null,
-                          tooltip: 'Choose from Gallery',
-                          color:
-                              controller.selectedModel.value.supportsImages
-                                  ? AppColors.primary
-                                  : AppColors.textGrey,
-                        ),
-                      ),
-                      Obx(
-                        () => IconButton(
-                          icon: const Icon(
-                            Icons.attach_file,
-                            color: AppColors.primary,
-                          ),
-                          onPressed:
-                              controller.selectedModel.value.supportsFiles
-                                  ? () => controller.pickFiles()
-                                  : null,
-                          tooltip: 'Attach Files',
-                          color:
-                              controller.selectedModel.value.supportsFiles
-                                  ? AppColors.primary
-                                  : AppColors.textGrey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // TODO: Uncomment when file upload is needed
+                // // Media attachment buttons
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: [
+                //       Obx(
+                //         () => IconButton(
+                //           icon: const Icon(
+                //             Icons.camera_alt,
+                //             color: AppColors.primary,
+                //           ),
+                //           onPressed:
+                //               controller.selectedModel.value.supportsImages
+                //                   ? () =>
+                //                       controller.pickImage(ImageSource.camera)
+                //                   : null,
+                //           tooltip: 'Take Photo',
+                //           color:
+                //               controller.selectedModel.value.supportsImages
+                //                   ? AppColors.primary
+                //                   : AppColors.textGrey,
+                //         ),
+                //       ),
+                //       Obx(
+                //         () => IconButton(
+                //           icon: const Icon(
+                //             Icons.photo,
+                //             color: AppColors.primary,
+                //           ),
+                //           onPressed:
+                //               controller.selectedModel.value.supportsImages
+                //                   ? () =>
+                //                       controller.pickImage(ImageSource.gallery)
+                //                   : null,
+                //           tooltip: 'Choose from Gallery',
+                //           color:
+                //               controller.selectedModel.value.supportsImages
+                //                   ? AppColors.primary
+                //                   : AppColors.textGrey,
+                //         ),
+                //       ),
+                //       Obx(
+                //         () => IconButton(
+                //           icon: const Icon(
+                //             Icons.attach_file,
+                //             color: AppColors.primary,
+                //           ),
+                //           onPressed:
+                //               controller.selectedModel.value.supportsFiles
+                //                   ? () => controller.pickFiles()
+                //                   : null,
+                //           tooltip: 'Attach Files',
+                //           color:
+                //               controller.selectedModel.value.supportsFiles
+                //                   ? AppColors.primary
+                //                   : AppColors.textGrey,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

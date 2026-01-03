@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class StorageService extends GetxService {
-  final _supabase = Supabase.instance.client;
+  late final _supabase = Supabase.instance.client;
   final Uuid _uuid = const Uuid();
 
   Future<Map<String, dynamic>?> uploadAttachment(
