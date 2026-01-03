@@ -24,17 +24,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.chat_bubble_outline,
-                      size: 60,
-                      color: AppColors.primary,
-                    ),
-                    const SizedBox(width: 10),
-                    Text('Welcome to Chatter', style: TextStyle(fontSize: 30)),
-                  ],
-                ),
+                Text('Welcome to ChatterG', style: TextStyle(fontSize: 30)),
                 const SizedBox(height: 10),
                 Text('Login to continue', style: TextStyle(fontSize: 16)),
                 const SizedBox(height: 30),

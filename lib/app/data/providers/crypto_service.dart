@@ -180,7 +180,7 @@ class CryptoService extends GetxService {
       final nonce = base64Decode(nonceBase64);
 
       Mac mac = Mac.empty;
-      if (macBase64 != null) {
+      if (macBase64 != null && macBase64.isNotEmpty) {
         mac = Mac(base64Decode(macBase64));
       }
 
